@@ -55,6 +55,7 @@ def create_cert(cert_name, cert_email, cert_sn, cert_key):
 
         cert.sign(ca_key, 'sha1')
 
+        print crypto.dump_certificate(crypto.FILETYPE_TEXT, cert)
         return (cert)
 
 def create_key():
@@ -74,10 +75,7 @@ for request in Request.query.filter(Request.generation_date == None).all():  # n
         print('generating key')
         new_key = create_key()
         print('generating certificate')
-        new_cert_sn = db.session.query(db.func.max(Request.cert_sn)).scalar() + 1
-        request.cert_sn = new_cert_sn
-        new_cert = create_cert(request.id, request.email, request.cert_sn, new_key)
-        print (crypto.dump_certificate(crypto.FILETYPE_TEXT, new_cert))
+        new_cert = create_cert(request.id, request.email, new_key)
         # construct the TAR-archive here
         # and maybe rework the email-code
         #call([app.config['COMMAND_BUILD'], request.id, request.email])
