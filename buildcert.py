@@ -59,6 +59,7 @@ def create_cert(cert_name, cert_email, cert_sn, cert_key):
         return (cert)
 
 def create_key():
+        """Create a 1024 RSA key-pair"""
         # create a key pair
         k = crypto.PKey()
         k.generate_key(crypto.TYPE_RSA, 1024)
